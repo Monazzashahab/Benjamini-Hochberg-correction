@@ -1,0 +1,59 @@
+#Benjamini-Hochberg correction for proteomics data
+
+install.packages("dplyr")
+library(dplyr)
+
+getwd()
+setwd("/Users/monazzashahab/Desktop/Lab/MSresult")
+pval<-read.csv("rawvalcis052322.csv")
+View(pval)
+library(dplyr)
+pvalcis<-filter(pval, pval$p.value.cisplatin<0.05)
+View(pvalcis)
+fhoch_cis<-p.adjust(pvalcis$p.value.cisplatin, method = "fdr")
+dim(as.data.frame(fhoch_cis))
+View(as.data.frame(fhoch_cis))
+pvalcishoch<-cbind(pvalcis, fhoch_cis)
+View(pvalcishoch)
+dim(pvalcishoch)
+#to export from r to csv
+write.csv(pvalcishoch,"/Users/monazzashahab/Desktop\\BHcis2.csv", row.names = FALSE)
+
+getwd()
+setwd("/Users/monazzashahab/Desktop/Lab/MSresult")
+pval<-read.csv("rawvalmncis.csv")
+View(pval)
+library(dplyr)
+pvalMnTCis<-filter(pval, pval$C.vs.A<=0.05)
+View(pvalMnTCis)
+fhoch_MnTCis<-p.adjust(pvalMnTCis$C.vs.A, method = "fdr")
+View(as.data.frame(fhoch_MnTCis))
+pvalMnTCishoch<-cbind(pvalMnTCis, fhoch_MnTCis)
+View(pvalMnTCishoch)
+dim(pvalMnTCishoch)
+write.csv(pvalMnTCishoch,"/Users/monazzashahab/Desktop\\BHMnTCis.csv", row.names = FALSE)
+
+
+
+getwd()
+setwd("/Users/monazzashahab/Desktop/Lab/MSresult")
+pval<-read.csv("rawvalmnt.csv")
+View(pval)
+dim(pval)
+typeof(pval)
+View(pval)
+class(pval)
+library(dplyr)
+Mnt<-filter(pval, pval$Mntbap<=0.05)
+fhoch_MnT<-p.adjust(Mnt$Mntbap, method = "fdr")
+View(as.data.frame(fhoch_MnT))
+pvalMnThoch<-cbind(Mnt, fhoch_MnT)
+View(pvalMnThoch)
+dim(pvalMnThoch)
+write.csv(pvalMnThoch,"/Users/monazzashahab/Desktop\\BHMnT.csv", row.names = FALSE)
+
+
+
+
+
+
